@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TP09</string>
+    <string name="spinnerPrompt">Continent</string>
+</resources>
