@@ -1,5 +1,6 @@
 package com.example.cdsm.tp09;
 
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<Pays> adapterPays;
     private ArrayAdapter<String> adapterContinents;
 
+    private int selectedContinent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         paysAsie.add(new Pays("THAÏLANDE", "BANCKOK",""));
 
         dataMap = new HashMap<>();
-        dataMap.put("", null);
+        dataMap.put("SELECTIONNEZ..", null);
         dataMap.put("EUROPE", paysEurope);
         dataMap.put("ASIE", paysAsie);
 
@@ -66,15 +69,18 @@ public class MainActivity extends AppCompatActivity {
         spinnerContinents.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println("---------------------- OnItemSelectedListener ");
+                System.out.println("---------------------- OnItemSelectedListener "+adapterView.getSelectedItem());
 
-                if (dataMap.get(i) != null) {
+                if (dataMap.get(adapterView.getSelectedItem()) != null) {
+                    System.out.println("-------------- list not null");
                     paysSelectedContinent.clear();
-                    paysSelectedContinent.addAll(dataMap.get(i));
+                    paysSelectedContinent.addAll(dataMap.get(adapterView.getSelectedItem()));
+                    selectedContinent = i;
                     listviewPays.setAdapter(adapterPays);
+                } else {
+                    System.out.println("NULL");
+                    listviewPays.setAdapter(null);
                 }
-
-
             }
 
             @Override
@@ -86,8 +92,13 @@ public class MainActivity extends AppCompatActivity {
         listviewPays.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //AlertDialog.Builder builder = new AlertDialog.Builder();
-                //builder.setTitle(paysSelectedContinent.get(i)).setMessage("Capital ")
+                System.out.println(dataMap.get(selectedContinent).get(i).toString());
+                /*
+                Intent intent = new Intent(MainActivity.this, ShowActivity.class);
+                intent.putExtra("paysName", paysSelectedContinent.get(i).getNomPays());
+                intent.putExtra("paysCapital", paysSelectedContinent.get(i).getCapitalPays());
+                intent.putExtra("paysDrapeau", paysSelectedContinent.get(i).getDrapeauPays());
+                */
             }
         });
 
